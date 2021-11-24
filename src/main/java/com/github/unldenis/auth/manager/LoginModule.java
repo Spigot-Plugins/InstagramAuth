@@ -143,7 +143,7 @@ public class LoginModule extends BaseModule{
         player.sendMessage(color("&7Login via your &5&lInstagram &7account"));
         player.sendMessage("");
         TextComponent message = new TextComponent(color("&7The plugin guarantees that the login is secure and no credentials are saved.\nAttention, any server can change the code and save the credentials, it is advisable to use a secondary account."));
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/unldenis"));
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/unldenis/InstagramAuth"));
         message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(color("Click to see the plugin"))));
         player.spigot().sendMessage(message);
         player.sendMessage("");
