@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -48,6 +49,9 @@ public class LoginModule extends BaseModule{
     public void onEnable() {
         registerCommands();
         registerEvents();
+
+        //on server reload
+        Bukkit.getOnlinePlayers().forEach(this::sendLoginMessage);
     }
 
     @Override
