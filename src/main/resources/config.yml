@@ -1,0 +1,8 @@
+server-account:
+  ##server account
+  profile: "servercraft.net"
+
+  ##enable clickable broadcast message to follow page
+  enabled: true
+  ##every X seconds the message will sent
+  timer-message: 60
