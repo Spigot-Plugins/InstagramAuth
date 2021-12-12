@@ -67,14 +67,10 @@ public class LoginModule extends BaseModule{
         Commands.create("login").handler(((sender, args) -> {
             if(sender instanceof Player) {
                 Player player = (Player) sender;
-                System.out.println("Hello");
                 Optional<PlayerClient> playerClient = find(player);
-                System.out.println("Hello 2");
                 if(playerClient.isPresent()) {
-                    System.out.println("Hello 3");
                     PlayerClient client = playerClient.get();
                     if(!client.isLogged()) {
-                        System.out.println("Hello 4");
                         //players is logging
                         if(args.length==2) {
                             player.sendMessage(color("&7Logging..."));
