@@ -39,7 +39,7 @@ public class InstagramAuth extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        modules.forEach(BaseModule::onDisable);
     }
 
     public FileConfiguration getConfig() {

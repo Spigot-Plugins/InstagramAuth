@@ -57,6 +57,11 @@ public class FollowServerModule extends BaseModule{
     }
 
     @Override
+    public void onDisable() {
+
+    }
+
+    @Override
     public void registerCommands() {
         Commands.create("followserverpage")
         .handler(((sender, args) -> {

@@ -13,6 +13,7 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -20,6 +21,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -52,7 +54,12 @@ public class LoginModule extends BaseModule{
         registerEvents();
 
         //on server reload
-        Bukkit.getOnlinePlayers().forEach(this::sendLoginMessage);
+        Bukkit.getOnlinePlayers().forEach(this::inject);
+    }
+
+    @Override
+    public void onDisable() {
+        playerClientSet.clear();
     }
 
     @Override
@@ -60,10 +67,14 @@ public class LoginModule extends BaseModule{
         Commands.create("login").handler(((sender, args) -> {
             if(sender instanceof Player) {
                 Player player = (Player) sender;
+                System.out.println("Hello");
                 Optional<PlayerClient> playerClient = find(player);
+                System.out.println("Hello 2");
                 if(playerClient.isPresent()) {
+                    System.out.println("Hello 3");
                     PlayerClient client = playerClient.get();
                     if(!client.isLogged()) {
+                        System.out.println("Hello 4");
                         //players is logging
                         if(args.length==2) {
                             player.sendMessage(color("&7Logging..."));
@@ -100,10 +111,7 @@ public class LoginModule extends BaseModule{
             Player player = e.getPlayer();
             Optional<PlayerClient> playerClient = find(player);
             if(!playerClient.isPresent()) {
-                playerClientSet.add(new PlayerClient(player.getUniqueId()));
-
-               sendLoginMessage(player);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1, true, false));
+                inject(player);
             }else{
                 if(!playerClient.get().isLogged()) {
                     sendLoginMessage(player);
@@ -132,6 +140,24 @@ public class LoginModule extends BaseModule{
             if(isLogging(player))
                 e.setCancelled(true);
         }).bindWith(plugin);
+
+
+        Events.subscribe(PlayerCommandPreprocessEvent.class)
+        .handler(e->{
+            Player player = e.getPlayer();
+            if(isLogging(player)) {
+                String[] array = e.getMessage().split(" ");
+                if(!(array.length == 3 && array[0].equals("/login")))
+                    e.setCancelled(true);
+            }
+        }).bindWith(plugin);
+
+    }
+
+    public void inject(@NotNull Player player) {
+        playerClientSet.add(new PlayerClient(player.getUniqueId()));
+        sendLoginMessage(player);
+        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 1, true, false));
     }
 
 
@@ -148,7 +174,7 @@ public class LoginModule extends BaseModule{
         player.sendMessage(centerLoginMessage);
         player.sendMessage("");
         TextComponent message = new TextComponent(color("&7The plugin's author guarantees that the login is secure and no credentials are saved.\nAttention, any server can change the code and save the credentials, it is advisable to use a secondary account."));
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/unldenis"));
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/unldenis/InstagramAuth"));
         message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(color("Click to see the plugin"))));
         player.spigot().sendMessage(message);
         player.sendMessage("");

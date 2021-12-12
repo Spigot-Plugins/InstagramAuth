@@ -13,6 +13,9 @@ public abstract class BaseModule {
 
     public abstract void onEnable();
 
+    public abstract void onDisable();
+
+
     protected void registerCommands() {}
 
     protected void registerEvents() {}
