@@ -3,6 +3,7 @@ package com.github.unldenis.auth.manager;
 import com.github.unldenis.auth.InstagramAuth;
 import com.github.unldenis.auth.actions.Login;
 import com.github.unldenis.auth.obj.PlayerClient;
+import com.github.unldenis.auth.util.SpigotUtil;
 import com.github.unldenis.helper.Commands;
 import com.github.unldenis.helper.Events;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -65,12 +66,10 @@ public class LoginModule extends BaseModule{
                     if(!client.isLogged()) {
                         //players is logging
                         if(args.length==2) {
-                            String $username = args[0];
-                            String $password = args[1];
                             player.sendMessage(color("&7Logging..."));
 
                             Login
-                            .loginPlayer($username, $password)
+                            .loginPlayer(args[0], args[1])
                             .whenComplete(sync((igClient, throwable) -> {
                                 if(throwable==null) {
                                     client.login(igClient);
@@ -140,18 +139,20 @@ public class LoginModule extends BaseModule{
         return playerClientSet;
     }
 
+    private final String centerLoginMessage = SpigotUtil.centeredMessage("&7Login via your &5&lInstagram &7account");
+
     private void sendLoginMessage(@NotNull Player player) {
         player.sendMessage("");
-        player.sendMessage(color("&7⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"));
+        player.sendMessage(color("&7⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"));
         player.sendMessage("");
-        player.sendMessage(color("&7Login via your &5&lInstagram &7account"));
+        player.sendMessage(centerLoginMessage);
         player.sendMessage("");
-        TextComponent message = new TextComponent(color("&7The plugin guarantees that the login is secure and no credentials are saved.\nAttention, any server can change the code and save the credentials, it is advisable to use a secondary account."));
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/unldenis/InstagramAuth"));
+        TextComponent message = new TextComponent(color("&7The plugin's author guarantees that the login is secure and no credentials are saved.\nAttention, any server can change the code and save the credentials, it is advisable to use a secondary account."));
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/unldenis"));
         message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(color("Click to see the plugin"))));
         player.spigot().sendMessage(message);
         player.sendMessage("");
-        player.sendMessage(color("&7⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"));
+        player.sendMessage(color("&7⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"));
         player.sendMessage("");
         player.sendMessage(color("&7Use /login <&cusername&7> <&cpassword&7>"));
     }
